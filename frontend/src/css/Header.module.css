@@ -1,0 +1,40 @@
+.menu {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+}
+
+.svg {
+    margin-left: 30px;
+    width: 40px;
+    height: 40px;
+    fill: #efefef;
+    cursor: pointer;
+}
+
+.svg1 {
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    width: 40px;
+    height: 40px;
+    fill: #efefef;
+    cursor: pointer;
+}
+
+.header {
+    height: 90px;
+    width: clamp(400px, 100vw, 100vw);
+    background-color: #293233;
+    color: #FFF;
+    position: relative;
+    z-index: 2;
+}
+
+.system_name {
+    height: 100%;
+    line-height: 90px;
+    margin-left: 15px;
+    font-size: clamp(20px, 5vw, 34px);
+}
