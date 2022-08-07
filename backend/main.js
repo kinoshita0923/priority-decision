@@ -19,16 +19,13 @@ const { WebClient } = require('@slack/web-api');
 //     console.log(response.ok);
 // })();
 
-
 (async () => {
-    const token  = 'xoxb-3490140351639-3490190193735-yOQDLl1s5TbiXHmk1ZiaxKs9';
+    const token = 'xoxb-3490140351639-3490190193735-yOQDLl1s5TbiXHmk1ZiaxKs9';
     const channel = '#sample';
-    const scheduled_message_id = ''
+    const scheduled_message_id = '';
     const client = new WebClient(token);
-    const response = client.chat.deleteScheduledMessage(
-        {
-            'channel': channel,
-            'scheduled_message_id': 'Q03GCHK4VE2', 
-        }
-    );
+    const response = client.chat.deleteScheduledMessage({
+        channel: channel,
+        scheduled_message_id: 'Q03GCHK4VE2',
+    });
 })();

@@ -10,14 +10,18 @@ const JWT_PASSWORD = process.env.jwt_password;
 router.post('/signup/', async (req, res) => {
     const connection = await new Promise((resolve, reject) => {
         pool.getConnection((error, connection) => {
-          if (error) reject(error);
-          resolve(connection);
+            if (error) reject(error);
+            resolve(connection);
         });
     });
 
     // 新規ユーザの情報をusersテーブルに保存
-    let sql = 'INSERT INTO Users (user_id, user_name, user_password, slack_token, model) VALUES (NULL, ?, ?, NULL, NULL)';
-    let values = [req.body.user_name, bcrypt.hashSync(req.body.user_password, 10)];
+    let sql =
+        'INSERT INTO Users (user_id, user_name, user_password, slack_token, model) VALUES (NULL, ?, ?, NULL, NULL)';
+    let values = [
+        req.body.user_name,
+        bcrypt.hashSync(req.body.user_password, 10),
+    ];
     connection.query(sql, values, (err, results) => {
         if (err) {
             res.send(err);
@@ -32,8 +36,8 @@ router.post('/signup/', async (req, res) => {
 router.post('/login/', async (req, res) => {
     const connection = await new Promise((resolve, reject) => {
         pool.getConnection((error, connection) => {
-          if (error) reject(error);
-          resolve(connection);
+            if (error) reject(error);
+            resolve(connection);
         });
     });
 
@@ -54,21 +58,17 @@ router.post('/login/', async (req, res) => {
                 if (bcrypt.compareSync(input_password, user_password)) {
                     let token = jwt.sign(
                         {
-                            user_id: results[0].user_id
+                            user_id: results[0].user_id,
                         },
                         JWT_PASSWORD
                     );
-                    
+
                     // ログインの期限を1週間に
-                    res.cookie(
-                        'token',
-                        token,
-                        {
-                            httpOnly: true,
-                            maxAge: 1000 * 60 * 60 * 24 * 7,
-                            path: '/'
-                        }
-                    ).send('Login success');
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                        maxAge: 1000 * 60 * 60 * 24 * 7,
+                        path: '/',
+                    }).send('Login success');
                 } else {
                     res.send('Wrong password');
                 }
@@ -82,8 +82,8 @@ router.post('/login/', async (req, res) => {
 router.get('/check/', async (req, res) => {
     const connection = await new Promise((resolve, reject) => {
         pool.getConnection((error, connection) => {
-          if (error) reject(error);
-          resolve(connection);
+            if (error) reject(error);
+            resolve(connection);
         });
     });
 
@@ -103,19 +103,17 @@ router.get('/check/', async (req, res) => {
                     // もしtokenに記載されているユーザが存在したらログインの期限を更新
                     let token = jwt.sign(
                         {
-                            user_id: user_id
+                            user_id: user_id,
                         },
                         JWT_PASSWORD
                     );
-                    res.clearCookie('token').cookie(
-                        'token',
-                        token,
-                        {
+                    res.clearCookie('token')
+                        .cookie('token', token, {
                             httpOnly: true,
                             maxAge: 1000 * 60 * 60 * 24 * 7,
-                            path: '/'
-                        }
-                    ).send('Check success');
+                            path: '/',
+                        })
+                        .send('Check success');
                 }
             }
         });
